@@ -9,11 +9,11 @@
 import UIKit
 
 class NowPlayingCollectionViewController: UIViewController,
-	UICollectionViewDataSource,
+	MovieCollectionViewDataSourceDelegate,
 	UICollectionViewDelegate
 {
 	
-	@IBOutlet private weak var collectionView: UICollectionView!
+	@IBOutlet fileprivate private(set) weak var collectionView: UICollectionView!
 	
 	// MARK: Lifecycle
 	
@@ -27,6 +27,9 @@ class NowPlayingCollectionViewController: UIViewController,
 	}
 	
 	fileprivate private(set) var movies: [Movie?] = []
+	
+	let dataSource = MovieCollectionViewDataSource()
+	
 	override func viewDidLoad() {
 		
 		super.viewDidLoad()
@@ -36,37 +39,18 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 		collectionView.backgroundColor = .collectionViewBackground
 		
-		collectionView.dataSource = self
+		dataSource.delegate = self
+		collectionView.dataSource = dataSource
+		collectionView.prefetchDataSource = dataSource
 		
 		collectionView.refreshControl = UIRefreshControl()
 		collectionView.refreshControl?.addTarget(self, action: #selector(self.reloadData(_:)), for: .valueChanged)
-		
-		reloadData(false)
 		
 	}
 	
 	func reloadData(_ sender: Any) {
 		
-		let page: Int = 1
-		API.getItems(page: page) { [weak self] (result) in
-			guard let movieResult = result.value
-				else {
-					return
-			}
-			var movies: [Movie?] = Array(repeating: .none, count: Int(movieResult.totalCount))
-			var index = (page - 1) * 20 + page == 1 ? 0 : 1
-			movieResult.movies.forEach {
-				defer { index += 1 }
-				movies[index] = $0
-			}
-			
-			DispatchQueue.main.async {
-				self?.collectionView.refreshControl?.endRefreshing()
-				self?.movies = movies
-				self?.collectionView.reloadData()
-			}
-			
-		}
+		dataSource.reloadData()
 		
 	}
 	
@@ -79,41 +63,15 @@ class NowPlayingCollectionViewController: UIViewController,
 	
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - MovieCollectionViewDataSourceDelegate
 
 extension NowPlayingCollectionViewController {
 	
-	func collectionView(
-		_ collectionView: UICollectionView,
-		numberOfItemsInSection section: Int)
-		-> Int
+	func movieCollectionViewDataSource(
+		_ source: MovieCollectionViewDataSource,
+		didFinshInitializationWith result: Result<Void>)
 	{
-		return movies.count
-	}
-	
-	func collectionView(
-		_ collectionView: UICollectionView,
-		cellForItemAt indexPath: IndexPath)
-		-> UICollectionViewCell
-	{
-		
-		let bareCell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.reuseIdentifier,
-		                                                  for: indexPath)
-		guard let cell = bareCell as? MovieCollectionViewCell else {
-			fatalError(
-				"Failed to dequeue a cell with identifier \(MovieCollectionViewCell.reuseIdentifier)"
-					+ " matching type \(MovieCollectionViewCell.self). "
-					+ "Check that the reuseIdentifier is set properly in your XIB/Storyboard "
-					+ "and that you registered the cell beforehand"
-			)
-		}
-		
-		cell.backgroundColor = .red
-		
-		cell.movie = movies[indexPath.row]
-		
-		return cell
-		
+		collectionView.reloadData()
 	}
 	
 }
