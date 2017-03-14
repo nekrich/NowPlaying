@@ -26,6 +26,7 @@ class NowPlayingCollectionViewController: UIViewController,
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	fileprivate private(set) var movies: [Movie?] = []
 	override func viewDidLoad() {
 		
 		super.viewDidLoad()
@@ -36,6 +37,26 @@ class NowPlayingCollectionViewController: UIViewController,
 		collectionView.backgroundColor = .collectionViewBackground
 		
 		collectionView.dataSource = self
+		
+		let page: Int = 1
+		API.getItems(page: page) { [weak self] (result) in
+			guard let movieResult = result.value
+				else {
+					return
+			}
+			var movies: [Movie?] = Array(repeating: .none, count: Int(movieResult.totalCount))
+			var index = (page - 1) * 20 + page == 1 ? 0 : 1
+			movieResult.movies.forEach {
+				defer { index += 1 }
+				movies[index] = $0
+			}
+			
+			DispatchQueue.main.async {
+				self?.movies = movies
+				self?.collectionView.reloadData()
+			}
+			
+		}
 		
 	}
 	
@@ -57,7 +78,7 @@ extension NowPlayingCollectionViewController {
 		numberOfItemsInSection section: Int)
 		-> Int
 	{
-		return 100
+		return movies.count
 	}
 	
 	func collectionView(
@@ -78,6 +99,8 @@ extension NowPlayingCollectionViewController {
 		}
 		
 		cell.backgroundColor = .red
+		
+		cell.movie = movies[indexPath.row]
 		
 		return cell
 		

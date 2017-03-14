@@ -12,17 +12,45 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="MovieCollectionViewCell" customModule="NowPalying" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="284" height="353"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="284" height="353"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JUP-jA-Rzi">
+                        <rect key="frame" x="0.0" y="0.0" width="284" height="353"/>
+                    </imageView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="58g-nB-Zfl">
+                        <rect key="frame" x="124" y="158" width="37" height="37"/>
+                        <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                </subviews>
             </view>
+            <constraints>
+                <constraint firstItem="JUP-jA-Rzi" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" id="7qw-EE-IOM"/>
+                <constraint firstItem="JUP-jA-Rzi" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="B7r-CS-Qli"/>
+                <constraint firstItem="58g-nB-Zfl" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="M5O-na-Mn6"/>
+                <constraint firstItem="JUP-jA-Rzi" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="PT7-uD-11F"/>
+                <constraint firstItem="JUP-jA-Rzi" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="135" id="YOy-SG-gKL"/>
+                <constraint firstItem="58g-nB-Zfl" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="db2-I9-Uci"/>
+                <constraint firstItem="JUP-jA-Rzi" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="ooE-tD-Fbb"/>
+            </constraints>
+            <size key="customSize" width="284" height="353"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                     <integer key="value" value="10"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="YOy-SG-gKL"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="activityIndicator" destination="58g-nB-Zfl" id="Vbf-Xl-RPJ"/>
+            </connections>
+            <point key="canvasLocation" x="152" y="205.5"/>
         </collectionViewCell>
     </objects>
 </document>

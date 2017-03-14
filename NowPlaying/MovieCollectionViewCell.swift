@@ -10,6 +10,18 @@ import UIKit
 
 class MovieCollectionViewCell: UICollectionViewCell {
 	
+	@IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+	
+	var movie: Movie? {
+		didSet {
+			if movie != nil {
+				activityIndicator.stopAnimating()
+			} else {
+				activityIndicator.startAnimating()
+			}
+		}
+	}
+	
 }
 
 extension MovieCollectionViewCell {
