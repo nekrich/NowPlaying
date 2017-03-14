@@ -8,10 +8,9 @@
 
 import UIKit
 
-
-
 class NowPlayingCollectionViewController: UIViewController,
-	UICollectionViewDataSource
+	UICollectionViewDataSource,
+	UICollectionViewDelegate
 {
 	
 	@IBOutlet private weak var collectionView: UICollectionView!
@@ -28,6 +27,7 @@ class NowPlayingCollectionViewController: UIViewController,
 	}
 	
 	override func viewDidLoad() {
+		
 		super.viewDidLoad()
 		
 		collectionView.register(MovieCollectionViewCell.nib,
@@ -37,6 +37,13 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 		collectionView.dataSource = self
 		
+	}
+	
+	func collectionView(
+		_ collectionView: UICollectionView,
+		didSelectItemAt indexPath: IndexPath)
+	{
+		let itemIndex = indexPath.row
 	}
 	
 }
@@ -69,6 +76,9 @@ extension NowPlayingCollectionViewController {
 					+ "and that you registered the cell beforehand"
 			)
 		}
+		
+		cell.backgroundColor = .red
+		
 		return cell
 		
 	}
