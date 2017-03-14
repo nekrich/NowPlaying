@@ -47,6 +47,8 @@
 		68E153841E783F4D00C93EB5 /* NowPlayingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NowPlayingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E153881E783F4D00C93EB5 /* NowPlayingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingUITests.swift; sourceTree = "<group>"; };
 		68E1538A1E783F4D00C93EB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68E153AF1E784B4800C93EB5 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
+		68E153B01E784B4E00C93EB5 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				68E153671E783F4D00C93EB5 /* NowPlaying */,
 				68E1537C1E783F4D00C93EB5 /* NowPlayingTests */,
 				68E153871E783F4D00C93EB5 /* NowPlayingUITests */,
+				68E153AE1E784B3100C93EB5 /* Metadata */,
 				68E153661E783F4D00C93EB5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,6 +128,48 @@
 			path = NowPlayingUITests;
 			sourceTree = "<group>";
 		};
+		68E153AC1E784A9A00C93EB5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				68E153AD1E784AA000C93EB5 /* UIKit */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		68E153AD1E784AA000C93EB5 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				68E153AA1E784A8500C93EB5 /* UIColor+Colors.swift */,
+			);
+			name = UIKit;
+			sourceTree = "<group>";
+		};
+		68E153AE1E784B3100C93EB5 /* Metadata */ = {
+			isa = PBXGroup;
+			children = (
+				68E153B11E784B5900C93EB5 /* git */,
+				68E153B21E784B5C00C93EB5 /* swiftlint */,
+			);
+			name = Metadata;
+			path = NowPalying;
+			sourceTree = "<group>";
+		};
+		68E153B11E784B5900C93EB5 /* git */ = {
+			isa = PBXGroup;
+			children = (
+				68E153AF1E784B4800C93EB5 /* .gitignore */,
+			);
+			name = git;
+			sourceTree = "<group>";
+		};
+		68E153B21E784B5C00C93EB5 /* swiftlint */ = {
+			isa = PBXGroup;
+			children = (
+				68E153B01E784B4E00C93EB5 /* .swiftlint.yml */,
+			);
+			name = swiftlint;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,6 +180,7 @@
 				68E153611E783F4C00C93EB5 /* Sources */,
 				68E153621E783F4C00C93EB5 /* Frameworks */,
 				68E153631E783F4C00C93EB5 /* Resources */,
+				68E1539C1E78415200C93EB5 /* swiftlint by Realm */,
 			);
 			buildRules = (
 			);
@@ -256,6 +302,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		68E1539C1E78415200C93EB5 /* swiftlint by Realm */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "swiftlint by Realm";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		68E153611E783F4C00C93EB5 /* Sources */ = {
