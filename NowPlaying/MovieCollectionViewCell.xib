@@ -49,6 +49,7 @@
             </variation>
             <connections>
                 <outlet property="activityIndicator" destination="58g-nB-Zfl" id="Vbf-Xl-RPJ"/>
+                <outlet property="posterImageView" destination="JUP-jA-Rzi" id="OgJ-F1-Hbs"/>
             </connections>
             <point key="canvasLocation" x="152" y="205.5"/>
         </collectionViewCell>

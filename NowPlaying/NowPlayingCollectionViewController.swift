@@ -38,6 +38,15 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 		collectionView.dataSource = self
 		
+		collectionView.refreshControl = UIRefreshControl()
+		collectionView.refreshControl?.addTarget(self, action: #selector(self.reloadData(_:)), for: .valueChanged)
+		
+		reloadData(false)
+		
+	}
+	
+	func reloadData(_ sender: Any) {
+		
 		let page: Int = 1
 		API.getItems(page: page) { [weak self] (result) in
 			guard let movieResult = result.value
@@ -52,6 +61,7 @@ class NowPlayingCollectionViewController: UIViewController,
 			}
 			
 			DispatchQueue.main.async {
+				self?.collectionView.refreshControl?.endRefreshing()
 				self?.movies = movies
 				self?.collectionView.reloadData()
 			}
