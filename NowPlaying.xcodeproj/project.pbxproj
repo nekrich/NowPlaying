@@ -18,7 +18,7 @@
 		68E153A41E78465400C93EB5 /* MovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68E153A21E78465400C93EB5 /* MovieCollectionViewCell.xib */; };
 		68E153A71E784A2C00C93EB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E153A91E784A2C00C93EB5 /* Localizable.strings */; };
 		68E153AB1E784A8500C93EB5 /* UIColor+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E153AA1E784A8500C93EB5 /* UIColor+Colors.swift */; };
-		68E153B61E78505E00C93EB5 /* TwoRowsCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E153B51E78505E00C93EB5 /* TwoRowsCollectionViewFlowLayout.swift */; };
+		68E153B61E78505E00C93EB5 /* MoviesCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E153B51E78505E00C93EB5 /* MoviesCollectionViewFlowLayout.swift */; };
 		68E153BA1E78597E00C93EB5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E153B91E78597E00C93EB5 /* API.swift */; };
 		68E153BC1E785BF300C93EB5 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E153BB1E785BF300C93EB5 /* Result.swift */; };
 		68E153BE1E785C6300C93EB5 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E153BD1E785C6300C93EB5 /* Movie.swift */; };
@@ -69,7 +69,7 @@
 		68E153AA1E784A8500C93EB5 /* UIColor+Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Colors.swift"; sourceTree = "<group>"; };
 		68E153AF1E784B4800C93EB5 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		68E153B01E784B4E00C93EB5 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
-		68E153B51E78505E00C93EB5 /* TwoRowsCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowsCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		68E153B51E78505E00C93EB5 /* MoviesCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		68E153B91E78597E00C93EB5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		68E153BB1E785BF300C93EB5 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		68E153BD1E785C6300C93EB5 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
@@ -248,7 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				68E1536A1E783F4D00C93EB5 /* NowPlayingCollectionViewController.swift */,
-				68E153B51E78505E00C93EB5 /* TwoRowsCollectionViewFlowLayout.swift */,
+				68E153B51E78505E00C93EB5 /* MoviesCollectionViewFlowLayout.swift */,
 				68E153961E78401700C93EB5 /* NowPlayingCollectionViewController.xib */,
 				68E153A11E78465400C93EB5 /* MovieCollectionViewCell.swift */,
 				68E153A21E78465400C93EB5 /* MovieCollectionViewCell.xib */,
@@ -569,7 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68E153A31E78465400C93EB5 /* MovieCollectionViewCell.swift in Sources */,
-				68E153B61E78505E00C93EB5 /* TwoRowsCollectionViewFlowLayout.swift in Sources */,
+				68E153B61E78505E00C93EB5 /* MoviesCollectionViewFlowLayout.swift in Sources */,
 				68E153C01E78770000C93EB5 /* URL+ParameterEncoding.swift in Sources */,
 				68E153C51E7877FE00C93EB5 /* MovieResult.swift in Sources */,
 				68E153AB1E784A8500C93EB5 /* UIColor+Colors.swift in Sources */,
@@ -726,6 +726,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.themoviedb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -740,6 +741,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.themoviedb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

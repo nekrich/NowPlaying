@@ -23,7 +23,7 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="JOZ-LV-9pK">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewLayout key="collectionViewLayout" id="xpe-9e-mkE" customClass="TwoRowsCollectionViewFlowLayout" customModule="NowPalying" customModuleProvider="target"/>
+                    <collectionViewLayout key="collectionViewLayout" id="xpe-9e-mkE" customClass="MoviesCollectionViewFlowLayout" customModule="NowPalying" customModuleProvider="target"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="S36-Z3-WDX"/>
                         <outlet property="delegate" destination="-1" id="g2T-ww-xTU"/>
