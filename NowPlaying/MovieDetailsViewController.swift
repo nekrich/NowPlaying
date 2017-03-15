@@ -17,8 +17,18 @@ class MovieDetailsViewController: UIViewController {
 		didSet {
 			title = movie?.title
 			configure()
+			if
+				let movie = movie,
+				let indexPath = indexPath,
+				(movie.auditoryRaitingUS?.isEmpty ?? true)
+			{
+				movie.fetchRaiting(itemIndexPath: indexPath,
+				                   completionHandler: { [weak self] in self?.newMovieAuditoryRaitingDetails($0) })
+			}
 		}
 	}
+	
+	var indexPath: IndexPath?
 	
 	var moviePosterWidth: CGFloat = 0 {
 		didSet {
@@ -36,6 +46,12 @@ class MovieDetailsViewController: UIViewController {
 		                                      right: tableView.contentInset.right)
 	}
 	
+	private func newMovieAuditoryRaitingDetails(_ result: Result<Movie>) {
+		if result.value?.auditoryRaitingUS != .none {
+			self.movie = result.value
+		}
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -48,13 +64,21 @@ class MovieDetailsViewController: UIViewController {
 		dataSource.register(tableView: tableView)
 		tableView.dataSource = dataSource
 		
-		
+		NotificationCenter.default.addObserver(self,
+		                                       selector: #selector(newMovieDetails(_:)),
+		                                       name: .NewMovieDetails,
+		                                       object: .none)
 		
 	}
 	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
+	deinit {
+		NotificationCenter.default.removeObserver(self)
+	}
+	
+	func newMovieDetails(_ notification: Notification) {
+		if notification.object as? IndexPath == indexPath {
+			self.movie = notification.userInfo?["movie"] as? Movie
+		}
 	}
 	
 	private func configure() {
@@ -63,6 +87,7 @@ class MovieDetailsViewController: UIViewController {
 			return
 		}
 		moviePosterImageView.sd_setImage(with: movie?.posterURL(width: moviePosterWidth))
+		tableView.reloadData()
 	}
 	
 	/*

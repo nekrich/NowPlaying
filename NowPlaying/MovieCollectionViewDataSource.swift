@@ -35,6 +35,25 @@ class MovieCollectionViewDataSource: NSObject,
 		
 		reloadData()
 		
+		NotificationCenter.default.addObserver(self,
+		                                       selector: #selector(newMovieRaiting(_:)),
+		                                       name: .NewMovieAuditoryRaiting,
+		                                       object: .none)
+		
+	}
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
+	}
+	
+	func newMovieRaiting(_ notification: Notification) {
+		if
+			let indexPath = notification.object as? IndexPath,
+			let movie = notification.userInfo?["movie"] as? Movie,
+			!(movie.auditoryRaitingUS?.isEmpty ?? true)
+		{
+			movies[indexPath.row] = movie
+		}
 	}
 	
 	func reloadData() {
@@ -191,7 +210,15 @@ extension MovieCollectionViewDataSource {
 		let cell: MovieCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 		
 		cell.indexPath = indexPath
-		cell.movie = movies[indexPath.row]
+		let movie = movies[indexPath.row]
+		cell.movie = movie
+		
+		if
+			movie == nil,
+			prefechingPages[page(for: indexPath.row)] == .none
+		{
+			fetch(pageNumber: page(for: indexPath.row), completionHandler: { _ in })
+		}
 		
 		return cell
 		

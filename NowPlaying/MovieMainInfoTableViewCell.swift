@@ -64,6 +64,8 @@ class MovieMainInfoTableViewCell: UITableViewCell, NibReusable {
 		
 		movieTitleLabel.text = movie.title.appending(" (\(releaseYear))")
 		
+		raitingValueLabel.text = movie.auditoryRaitingUS
+		
 	}
 	
 }

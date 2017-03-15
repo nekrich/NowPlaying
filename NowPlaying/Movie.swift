@@ -50,6 +50,44 @@ struct Movie {
 		self.movieDescription = movieDescription
 		self.posterPath = jsonDictionary["poster_path"] as? String
 		self.releaseDate = releaseDate
+		
+		if
+			let releases = jsonDictionary["releases"] as? [String : Any],
+			let countries = releases["countries"] as? [[String : Any]]
+		{
+			let auditoryRaiting = countries.first(where: {
+				(!(($0["certification"] as? String)?.isEmpty ?? true))
+					&& (($0["iso_3166_1"] as? String) == "US")
+			})?["certification"] as? String
+			
+			self.auditoryRaitingUS = auditoryRaiting ?? Bundle.main.localizedString(forKey: "UNKNOWN RAITING",
+			                                                                        value: .none,
+			                                                                        table: .none)
+			
+		}
+		
+	}
+	
+	func fetchRaiting(
+		itemIndexPath: IndexPath,
+		completionHandler: @escaping (Result<Movie>) -> Void)
+	{
+		
+		API.getMovieDetails(self) {
+			
+			completionHandler($0)
+			
+			if
+				let movie = $0.value,
+				!(movie.auditoryRaitingUS?.isEmpty ?? true)
+			{
+				NotificationCenter.default.post(name: .NewMovieAuditoryRaiting,
+				                                object: itemIndexPath,
+				                                userInfo: ["movie" : movie])
+			}
+			
+		}
+		
 	}
 	
 }

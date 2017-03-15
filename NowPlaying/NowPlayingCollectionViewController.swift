@@ -43,7 +43,9 @@ class NowPlayingCollectionViewController: UIViewController,
 		collectionView.prefetchDataSource = dataSource
 		
 		collectionView.refreshControl = UIRefreshControl()
-		collectionView.refreshControl?.addTarget(self, action: #selector(self.reloadData(_:)), for: .valueChanged)
+		collectionView.refreshControl?.addTarget(self,
+		                                         action: #selector(self.reloadData(_:)),
+		                                         for: .valueChanged)
 		
 		let backButtonTitle = Bundle.main.localizedString(forKey: "BACK",
 		                                                  value: .none,
@@ -65,13 +67,16 @@ class NowPlayingCollectionViewController: UIViewController,
 		_ collectionView: UICollectionView,
 		didSelectItemAt indexPath: IndexPath)
 	{
+		
 		let itemIndex = indexPath.row
 		let movieDetailsController = MovieDetailsViewController()
+		movieDetailsController.indexPath = indexPath
 		movieDetailsController.movie = dataSource.movies[itemIndex]
 		movieDetailsController.moviePosterWidth =
 			(collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize.width
 			?? view.frame.width
 		navigationController?.pushViewController(movieDetailsController, animated: true)
+		
 	}
 	
 }

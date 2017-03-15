@@ -120,6 +120,26 @@ extension API {
 		
 	}
 	
+	private static func getRequest(
+		to apiPath: String,
+		with parameters: [String : Any]? = .none)
+		-> URLRequest
+	{
+		var parameters = parameters ?? [:]
+		parameters["api_key"] = apiKey
+		parameters["language"] = Locale.current.identifier
+		
+		let url = apiURL.appendingPathComponent(apiPath).appendingPercentEncodedParameters(parameters)
+		
+		var request = URLRequest(url: url,
+		                         cachePolicy: .useProtocolCachePolicy,
+		                         timeoutInterval: 30.0)
+		request.httpMethod = "GET"
+		
+		return request
+		
+	}
+	
 	@discardableResult
 	static func getItems(
 		page: Int = 1,
@@ -133,17 +153,8 @@ extension API {
 			}
 		}
 		
-		var parameters: [String : Any] = [:]
-		parameters["api_key"] = apiKey
-		parameters["language"] = Locale.current.identifier
-		parameters["page"] = page
-		
-		let url = apiURL.appendingPathComponent("movie/now_playing").appendingPercentEncodedParameters(parameters)
-		
-		var request = URLRequest(url: url,
-		                         cachePolicy: .useProtocolCachePolicy,
-		                         timeoutInterval: 30.0)
-		request.httpMethod = "GET"
+		let request = getRequest(to: "movie/now_playing",
+		                         with: ["page" : page])
 		
 		let session = URLSession.shared
 		
@@ -164,6 +175,48 @@ extension API {
 			let movieResult = MovieResult(totalCount: totalCount, movies: movies)
 			
 			handler(.success(movieResult))
+			
+		})
+		
+		dataTask.resume()
+		
+		API.activeRequestsCount += 1
+		
+		return dataTask
+		
+	}
+	
+	@discardableResult
+	static func getMovieDetails(
+		_ movie: Movie,
+		completionHandler: @escaping (Result<Movie>) -> Void)
+		-> URLSessionDataTask
+	{
+		
+		let handler: (Result<Movie>) -> Void = { result in
+			DispatchQueue.main.async {
+				completionHandler(result)
+			}
+		}
+		
+		let request = getRequest(to: "movie/\(movie.id)",
+		                         with: ["append_to_response" : "releases"])
+		
+		let session = URLSession.shared
+		
+		let dataTask = session.dataTask(with: request, completionHandler: jsonResponse { result in
+			
+			defer { API.activeRequestsCount -= 1 }
+			
+			guard
+				let json = result.value,
+				let updatedMovie = Movie(jsonDictionary: json)
+				else {
+					handler(.success(movie))
+					return
+			}
+			
+			handler(.success(updatedMovie))
 			
 		})
 		

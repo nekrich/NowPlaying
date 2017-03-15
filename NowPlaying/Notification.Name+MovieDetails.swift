@@ -11,7 +11,11 @@ import Foundation
 extension Notification.Name {
 	
 	static var NewMovieDetails: Notification.Name {
-		return Notification.Name("NPNewMovieDetailsIP")
+		return Notification.Name("NPNewMovieDetails")
+	}
+	
+	static var NewMovieAuditoryRaiting: Notification.Name {
+		return Notification.Name("NPNewMovieAuditoryRaiting")
 	}
 	
 }
