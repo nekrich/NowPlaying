@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class MovieCollectionViewCell: UICollectionViewCell {
+class MovieCollectionViewCell: UICollectionViewCell, NibReusable {
 	
 	@IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet private weak var posterImageView: UIImageView!
@@ -66,6 +66,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
 		                                       selector: #selector(newMovieDetails(_:)),
 		                                       name: .NewMovieDetails,
 		                                       object: .none)
+		layer.cornerRadius = .defaultCornerRadius
 	}
 	
 	deinit {
@@ -76,18 +77,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
 		if notification.object as? IndexPath == indexPath {
 			self.movie = notification.userInfo?["movie"] as? Movie
 		}
-	}
-	
-}
-
-extension MovieCollectionViewCell {
-	
-	static var reuseIdentifier: String {
-		return String(describing: self)
-	}
-	
-	static var nib: UINib {
-		return UINib(nibName: String(describing: self), bundle: Bundle(for: self))
 	}
 	
 }

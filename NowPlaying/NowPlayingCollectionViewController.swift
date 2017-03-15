@@ -34,8 +34,7 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 		super.viewDidLoad()
 		
-		collectionView.register(MovieCollectionViewCell.nib,
-		                        forCellWithReuseIdentifier: MovieCollectionViewCell.reuseIdentifier)
+		collectionView.register(cellType: MovieCollectionViewCell.self)
 		
 		collectionView.backgroundColor = .collectionViewBackground
 		
@@ -45,6 +44,14 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 		collectionView.refreshControl = UIRefreshControl()
 		collectionView.refreshControl?.addTarget(self, action: #selector(self.reloadData(_:)), for: .valueChanged)
+		
+		let backButtonTitle = Bundle.main.localizedString(forKey: "BACK",
+		                                                  value: .none,
+		                                                  table: .none)
+		self.navigationItem.backBarButtonItem = UIBarButtonItem(title: backButtonTitle,
+		                                                        style: .done,
+		                                                        target: .none,
+		                                                        action: .none)
 		
 	}
 	
@@ -59,6 +66,12 @@ class NowPlayingCollectionViewController: UIViewController,
 		didSelectItemAt indexPath: IndexPath)
 	{
 		let itemIndex = indexPath.row
+		let movieDetailsController = MovieDetailsViewController()
+		movieDetailsController.movie = dataSource.movies[itemIndex]
+		movieDetailsController.moviePosterWidth =
+			(collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize.width
+			?? view.frame.width
+		navigationController?.pushViewController(movieDetailsController, animated: true)
 	}
 	
 }

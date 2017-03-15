@@ -17,6 +17,8 @@ struct Movie {
 	
 	private let posterPath: String?
 	
+	let releaseDate: Date
+	
 	let score: Double
 	
 	private(set) var auditoryRaitingUS: String?
@@ -35,7 +37,9 @@ struct Movie {
 			let id = jsonDictionary["id"] as? UInt64,
 			let title = jsonDictionary["title"] as? String,
 			let movieDescription = jsonDictionary["overview"] as? String,
-			let score = jsonDictionary["vote_average"] as? Double
+			let score = jsonDictionary["vote_average"] as? Double,
+			let releaseDateString = jsonDictionary["release_date"] as? String,
+			let releaseDate = Formatters.incomingReleaseDateFormatter.date(from: releaseDateString)
 			else {
 				return nil
 		}
@@ -45,7 +49,7 @@ struct Movie {
 		self.score = score
 		self.movieDescription = movieDescription
 		self.posterPath = jsonDictionary["poster_path"] as? String
-		
+		self.releaseDate = releaseDate
 	}
 	
 }

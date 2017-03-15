@@ -23,7 +23,7 @@ class MovieCollectionViewDataSource: NSObject,
 	UICollectionViewDataSourcePrefetching
 {
 	
-	fileprivate private(set) var movies: [Movie?] = []
+	private(set) var movies: [Movie?] = []
 	
 	weak var delegate: MovieCollectionViewDataSourceDelegate?
 	
@@ -188,16 +188,7 @@ extension MovieCollectionViewDataSource {
 		-> UICollectionViewCell
 	{
 		
-		let bareCell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.reuseIdentifier,
-		                                                  for: indexPath)
-		guard let cell = bareCell as? MovieCollectionViewCell else {
-			fatalError(
-				"Failed to dequeue a cell with identifier \(MovieCollectionViewCell.reuseIdentifier)"
-					+ " matching type \(MovieCollectionViewCell.self). "
-					+ "Check that the reuseIdentifier is set properly in your XIB/Storyboard "
-					+ "and that you registered the cell beforehand"
-			)
-		}
+		let cell: MovieCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 		
 		cell.indexPath = indexPath
 		cell.movie = movies[indexPath.row]

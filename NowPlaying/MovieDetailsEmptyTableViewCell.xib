@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KGk-i7-Jjw" customClass="MovieDetailsEmptyTableViewCell" customModule="NowPalying" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="8"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="7"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpZ-BV-oBV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="8"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="8" id="Ujz-Zs-aCj"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.14568172089041095" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="cpZ-BV-oBV" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="5Km-el-wZL"/>
+                    <constraint firstItem="cpZ-BV-oBV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="EPI-v3-O3r"/>
+                    <constraint firstItem="cpZ-BV-oBV" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="Srq-mb-dZ4"/>
+                    <constraint firstItem="cpZ-BV-oBV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Uhl-19-PgU"/>
+                    <constraint firstAttribute="top" secondItem="cpZ-BV-oBV" secondAttribute="top" id="bFw-DG-TUV"/>
+                    <constraint firstItem="cpZ-BV-oBV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="16.5" id="okP-8W-Db2"/>
+                    <constraint firstItem="cpZ-BV-oBV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xD8-tt-LHk"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="bFw-DG-TUV"/>
+                        <exclude reference="okP-8W-Db2"/>
+                        <exclude reference="xD8-tt-LHk"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+        </tableViewCell>
+    </objects>
+</document>
