@@ -71,6 +71,7 @@ extension NowPlayingCollectionViewController {
 		_ source: MovieCollectionViewDataSource,
 		didFinshInitializationWith result: Result<Void>)
 	{
+		collectionView.refreshControl?.endRefreshing()
 		collectionView.reloadData()
 	}
 	

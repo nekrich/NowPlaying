@@ -9,6 +9,8 @@
 import Foundation
 
 struct MovieResult {
+	
 	let totalCount: Int
 	let movies: [Movie]
+	
 }

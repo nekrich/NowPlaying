@@ -16,6 +16,18 @@ extension UIColor {
 		
 	}
 	
+	final class var collectionViewCellBackground: UIColor {
+		
+		return .lightGray
+		
+	}
+	
+	final class var collectionViewCellActivityIndicatorColor: UIColor {
+		
+		return .darkGray
+		
+	}
+	
 	final class var navigationBarTintColor: UIColor {
 		
 		return .white

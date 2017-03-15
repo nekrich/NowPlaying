@@ -15,13 +15,17 @@ struct Movie {
 	let title: String
 	let movieDescription: String
 	
-	private let posterPath: String
+	private let posterPath: String?
 	
 	let score: Double
 	
 	private(set) var auditoryRaitingUS: String?
 	
-	func posterURL(width: CGFloat) -> URL {
+	func posterURL(width: CGFloat) -> URL? {
+		guard let posterPath = posterPath
+			else {
+				return .none
+		}
 		return API.posterURL(width: width, at: posterPath)
 	}
 	
@@ -31,8 +35,7 @@ struct Movie {
 			let id = jsonDictionary["id"] as? UInt64,
 			let title = jsonDictionary["title"] as? String,
 			let movieDescription = jsonDictionary["overview"] as? String,
-			let score = jsonDictionary["vote_average"] as? Double,
-			let posterPath = jsonDictionary["poster_path"] as? String
+			let score = jsonDictionary["vote_average"] as? Double
 			else {
 				return nil
 		}
@@ -41,7 +44,7 @@ struct Movie {
 		self.title = title
 		self.score = score
 		self.movieDescription = movieDescription
-		self.posterPath = posterPath
+		self.posterPath = jsonDictionary["poster_path"] as? String
 		
 	}
 	

@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,10 +23,16 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JUP-jA-Rzi">
                         <rect key="frame" x="0.0" y="0.0" width="284" height="353"/>
                     </imageView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="58g-nB-Zfl">
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="58g-nB-Zfl">
                         <rect key="frame" x="124" y="158" width="37" height="37"/>
-                        <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="color" red="0.98039215690000003" green="0.79607843140000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVD-wg-LOX">
+                        <rect key="frame" x="8" y="8" width="268" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <constraints>
@@ -34,7 +42,11 @@
                 <constraint firstItem="JUP-jA-Rzi" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="PT7-uD-11F"/>
                 <constraint firstItem="JUP-jA-Rzi" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="135" id="YOy-SG-gKL"/>
                 <constraint firstItem="58g-nB-Zfl" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="db2-I9-Uci"/>
+                <constraint firstItem="HVD-wg-LOX" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leadingMargin" id="lUI-RU-qET"/>
                 <constraint firstItem="JUP-jA-Rzi" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="ooE-tD-Fbb"/>
+                <constraint firstItem="HVD-wg-LOX" firstAttribute="height" relation="lessThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.2" id="rWj-jq-MTY"/>
+                <constraint firstItem="HVD-wg-LOX" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="sPy-dX-9XZ"/>
+                <constraint firstItem="HVD-wg-LOX" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="y9d-kr-Dhm"/>
             </constraints>
             <size key="customSize" width="284" height="353"/>
             <userDefinedRuntimeAttributes>
@@ -45,10 +57,12 @@
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="YOy-SG-gKL"/>
+                    <exclude reference="rWj-jq-MTY"/>
                 </mask>
             </variation>
             <connections>
                 <outlet property="activityIndicator" destination="58g-nB-Zfl" id="Vbf-Xl-RPJ"/>
+                <outlet property="movieTitle" destination="HVD-wg-LOX" id="XRz-Fj-ARw"/>
                 <outlet property="posterImageView" destination="JUP-jA-Rzi" id="OgJ-F1-Hbs"/>
             </connections>
             <point key="canvasLocation" x="152" y="205.5"/>

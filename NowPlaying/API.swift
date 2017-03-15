@@ -120,9 +120,11 @@ extension API {
 		
 	}
 	
+	@discardableResult
 	static func getItems(
 		page: Int = 1,
 		completionHandler: @escaping (Result<MovieResult>) -> Void)
+		-> URLSessionDataTask
 	{
 		
 		let handler: (Result<MovieResult>) -> Void = { result in
@@ -161,13 +163,15 @@ extension API {
 			
 			let movieResult = MovieResult(totalCount: totalCount, movies: movies)
 			
-			completionHandler(.success(movieResult))
+			handler(.success(movieResult))
 			
 		})
 		
 		dataTask.resume()
 		
 		API.activeRequestsCount += 1
+		
+		return dataTask
 		
 	}
 	
