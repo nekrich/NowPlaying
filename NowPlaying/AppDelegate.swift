@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		-> Bool
 	{
 		
-		let navigationController = UINavigationController(rootViewController: NowPlayingCollectionViewController())
+		let c = NowPlayingCollectionViewController()
+		let navigationController = UINavigationController(rootViewController: c)
 		navigationController.navigationBar.barTintColor = .navigationBarTintColor
 		
 		let window = UIWindow(frame: UIScreen.main.bounds)

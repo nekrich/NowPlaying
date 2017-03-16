@@ -4,12 +4,11 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieDetailsViewController" customModule="NowPalying" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieDetailsViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
                 <outlet property="moviePosterImageView" destination="nv3-FH-3Ib" id="aSw-Ck-s4k"/>
                 <outlet property="tableView" destination="t5n-jK-MFs" id="Fin-qT-3K4"/>
@@ -33,24 +32,24 @@
                     <blurEffect style="dark"/>
                 </visualEffectView>
                 <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="t5n-jK-MFs">
-                    <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="nv3-FH-3Ib" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="1Kb-hY-pjr"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="5mN-mp-XWS"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8RA-tP-nhh"/>
                 <constraint firstItem="nv3-FH-3Ib" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="9Bt-3x-qRI"/>
                 <constraint firstItem="nv3-FH-3Ib" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="9UL-6s-Fjq"/>
                 <constraint firstItem="MPi-ix-xbo" firstAttribute="width" secondItem="nv3-FH-3Ib" secondAttribute="width" id="Csb-zq-cVx"/>
                 <constraint firstItem="nv3-FH-3Ib" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="P0I-Pc-MDD"/>
-                <constraint firstItem="t5n-jK-MFs" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="QSQ-TK-DZ9"/>
-                <constraint firstItem="t5n-jK-MFs" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="SCJ-A4-dF5"/>
-                <constraint firstItem="t5n-jK-MFs" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="etg-dd-nK9"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="QOa-yC-Eb5"/>
                 <constraint firstItem="MPi-ix-xbo" firstAttribute="height" secondItem="nv3-FH-3Ib" secondAttribute="height" id="gNp-XT-OXG"/>
-                <constraint firstItem="t5n-jK-MFs" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="oup-Ei-sGi"/>
                 <constraint firstItem="MPi-ix-xbo" firstAttribute="centerX" secondItem="nv3-FH-3Ib" secondAttribute="centerX" id="sVb-Xu-mOl"/>
                 <constraint firstItem="MPi-ix-xbo" firstAttribute="centerY" secondItem="nv3-FH-3Ib" secondAttribute="centerY" id="upz-od-Y64"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="vX5-pa-jJ6"/>
             </constraints>
         </view>
     </objects>

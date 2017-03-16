@@ -4,14 +4,14 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NowPlayingCollectionViewController" customModule="NowPalying" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NowPlayingCollectionViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="JOZ-LV-9pK" id="PSx-yv-hcK"/>
+                <outlet property="collectionViewFlowLayout" destination="xpe-9e-mkE" id="Z2h-vf-cgr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="9TM-eJ-GRW"/>
             </connections>
         </placeholder>
@@ -23,7 +23,7 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="JOZ-LV-9pK">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewLayout key="collectionViewLayout" id="xpe-9e-mkE" customClass="MoviesCollectionViewFlowLayout" customModule="NowPalying" customModuleProvider="target"/>
+                    <collectionViewLayout key="collectionViewLayout" id="xpe-9e-mkE" customClass="MoviesCollectionViewFlowLayout" customModule="NowPlaying" customModuleProvider="target"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="S36-Z3-WDX"/>
                         <outlet property="delegate" destination="-1" id="g2T-ww-xTU"/>

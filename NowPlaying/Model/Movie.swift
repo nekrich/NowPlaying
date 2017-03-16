@@ -83,7 +83,7 @@ struct Movie {
 			{
 				NotificationCenter.default.post(name: .NewMovieAuditoryRaiting,
 				                                object: itemIndexPath,
-				                                userInfo: ["movie" : movie])
+				                                userInfo: [Notification.Name.MovieUserInfoKeys.movie : movie])
 			}
 			
 		}

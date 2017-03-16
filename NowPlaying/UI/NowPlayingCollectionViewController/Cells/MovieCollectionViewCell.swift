@@ -75,7 +75,7 @@ class MovieCollectionViewCell: UICollectionViewCell, NibReusable {
 	
 	func newMovieDetails(_ notification: Notification) {
 		if notification.object as? IndexPath == indexPath {
-			self.movie = notification.userInfo?["movie"] as? Movie
+			self.movie = notification.userInfo?[Notification.Name.MovieUserInfoKeys.movie] as? Movie
 		}
 	}
 	

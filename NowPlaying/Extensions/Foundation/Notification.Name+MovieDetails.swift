@@ -10,6 +10,10 @@ import Foundation
 
 extension Notification.Name {
 	
+	enum MovieUserInfoKeys: String {
+		case movie
+	}
+	
 	static var NewMovieDetails: Notification.Name {
 		return Notification.Name("NPNewMovieDetails")
 	}

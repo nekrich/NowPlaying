@@ -17,7 +17,7 @@ class MoviesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 		minimumLineSpacing = minimumInteritemSpacing * 0.85
 		sectionInset = UIEdgeInsets(top: 25,
 		                            left: 20,
-		                            bottom: 0,
+		                            bottom: 20,
 		                            right: 20)
 	}
 	

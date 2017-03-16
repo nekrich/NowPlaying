@@ -22,16 +22,16 @@ struct API {
 	static fileprivate let apiKey: String = "ebea8cfca72fdff8d2624ad7bbf78e4c"
 	
 	// Activity Indicator
-	static private var lock: os_unfair_lock_s = os_unfair_lock_s()
+	static private var lock = DispatchSemaphore(value: 1)
 	static private var _activeRequestsCount: UInt = 0
 	fileprivate static var activeRequestsCount: UInt {
 		get {
-			os_unfair_lock_lock(&lock); defer { os_unfair_lock_unlock(&lock) }
+			lock.wait(); defer { lock.signal() }
 			let activeRequestsCount = _activeRequestsCount
 			return activeRequestsCount
 		}
 		set {
-			os_unfair_lock_lock(&lock); defer { os_unfair_lock_unlock(&lock) }
+			lock.wait(); defer { lock.signal() }
 			_activeRequestsCount = newValue
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = activeRequestsCount > 0
@@ -132,11 +132,32 @@ extension API {
 		let url = apiURL.appendingPathComponent(apiPath).appendingPercentEncodedParameters(parameters)
 		
 		var request = URLRequest(url: url,
-		                         cachePolicy: .useProtocolCachePolicy,
+		                         cachePolicy: .reloadIgnoringLocalCacheData,
 		                         timeoutInterval: 30.0)
 		request.httpMethod = "GET"
 		
 		return request
+		
+	}
+	
+	@discardableResult
+	static func getItems(
+		pageIndex: Int = 1,
+		filter: Void?,
+		completionHandler: @escaping (Result<[Movie]>, Int?) -> Void)
+		-> URLSessionDataTask
+	{
+		
+		return getItems(page: pageIndex) { (result: Result<MovieResult>) in
+			guard
+				let movieResult = result.value
+				else {
+					completionHandler(.failure(result.error!), .none) // swiftlint:disable:this force_unwrapping
+					return
+			}
+			completionHandler(.success(movieResult.movies),
+			                  movieResult.totalCount)
+		}
 		
 	}
 	
