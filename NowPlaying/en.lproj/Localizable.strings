@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  NowPalying
+
+  Created by Vitalii Budnik on 3/14/17.
+  Copyright © 2017 Vitalii Budnik. All rights reserved.
+*/
+
+"NOW PLAYING" = "Now playing";
+
+"SCORE" = "Score";
+
+"RAITING" = "Raiting";
+
+"RELEASE DATE" = "Release Date";
+
+"BACK" = "back";
+
+"UNKNOWN RAITING" = "Unknown";

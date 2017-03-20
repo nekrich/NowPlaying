@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieDetailsViewController" customModule="NowPlaying" customModuleProvider="target">
+            <connections>
+                <outlet property="moviePosterImageView" destination="nv3-FH-3Ib" id="aSw-Ck-s4k"/>
+                <outlet property="tableView" destination="t5n-jK-MFs" id="Fin-qT-3K4"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nv3-FH-3Ib">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MPi-ix-xbo">
+                    <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="jux-2T-gkF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <blurEffect style="dark"/>
+                </visualEffectView>
+                <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="t5n-jK-MFs">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="nv3-FH-3Ib" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="1Kb-hY-pjr"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="5mN-mp-XWS"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8RA-tP-nhh"/>
+                <constraint firstItem="nv3-FH-3Ib" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="9Bt-3x-qRI"/>
+                <constraint firstItem="nv3-FH-3Ib" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="9UL-6s-Fjq"/>
+                <constraint firstItem="MPi-ix-xbo" firstAttribute="width" secondItem="nv3-FH-3Ib" secondAttribute="width" id="Csb-zq-cVx"/>
+                <constraint firstItem="nv3-FH-3Ib" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="P0I-Pc-MDD"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="QOa-yC-Eb5"/>
+                <constraint firstItem="MPi-ix-xbo" firstAttribute="height" secondItem="nv3-FH-3Ib" secondAttribute="height" id="gNp-XT-OXG"/>
+                <constraint firstItem="MPi-ix-xbo" firstAttribute="centerX" secondItem="nv3-FH-3Ib" secondAttribute="centerX" id="sVb-Xu-mOl"/>
+                <constraint firstItem="MPi-ix-xbo" firstAttribute="centerY" secondItem="nv3-FH-3Ib" secondAttribute="centerY" id="upz-od-Y64"/>
+                <constraint firstItem="t5n-jK-MFs" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="vX5-pa-jJ6"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

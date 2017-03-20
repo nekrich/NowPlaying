@@ -1,0 +1,77 @@
+
+included: # paths to include during linting. `--path` is ignored if present.
+  - NowPlaying
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Carthage
+  - Pods
+
+disabled_rules:
+  - opening_brace
+  - switch_case_on_newline
+  - vertical_parameter_alignment
+  - large_tuple
+  - closure_end_indentation
+  - missing_docs
+
+opt_in_rules: # some rules are only opt-in
+  - empty_count
+  - force_cast
+  - conditional_returns_on_newline
+  - force_unwrapping
+  - private_outlet
+  - redundant_nil_coalesing
+  - trailing_whitespace
+  - closure_spacing
+  - explicit_init
+  - redundant_nil_coalescing
+  - nimble_operator
+  - overridden_super_call
+  - file_header
+  - number_separator
+  - attributes
+  - operator_usage_whitespace
+  - prohibited_super_call
+  - switch_case_on_newline
+  - first_where
+  - object_literal
+
+force_cast: warning # implicitly
+
+force_try:
+  severity: warning
+
+private_outlet:
+  allow_private_set: true
+
+type_name:
+  excluded:
+    - API
+
+trailing_whitespace:
+  ignores_empty_lines: true
+  ignores_comments: true
+
+variable_name:
+  min_length: # only min_length
+    error: 3 # only error
+  excluded: # excluded via string array
+    - id
+    - log
+
+file_header:
+  required_pattern: |
+                    \/\/
+                    \/\/  .*?\.swift
+                    \/\/  NowPlaying
+                    \/\/
+                    \/\/  Created by .*? on \d{1,2}\/\d{1,2}\/\d{2}\.
+                    \/\/  Copyright © \d{4} Vitalii Budnik\. All rights reserved\.
+                    \/\/
+
+colon:
+  apply_to_dictionaries: false
+missing_docs:
+#  - private
+#  - internal
+  - public
