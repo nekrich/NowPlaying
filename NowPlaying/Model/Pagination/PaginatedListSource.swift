@@ -9,77 +9,34 @@
 import Foundation
 import UIKit
 
-extension DispatchQueue {
+class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:disable:this type_body_length
 	
-	class var currentLabel: String? {
-		return String(validatingUTF8: __dispatch_queue_get_label(nil))
-	}
+	let pageSize: Int
 	
-}
+	typealias FetchCompletionBlock =
+		(_ result: Result<[Element]>,
+		_ totalElementsCount: Int?)
+		-> Void
+	
+	typealias PageFetchBlock = (
+		_ pageNumber: Int,
+		_ filter: Filter?,
+		_ completionHandler: @escaping FetchCompletionBlock)
+		-> FetchTask?
+	
+	typealias PrefetchingBlock = (Element, _ prefetchingState: PaginatedListSourcePrefetchingState) -> Void
+	
+	private typealias Tuple = (FetchTask?, FetchCompletionBlock)
+	
+	var prefetchingBlock: PrefetchingBlock?
+	
+	private var prefetchingPages: Atomic<[Int : FetchTask]> = Atomic(value: [:])
+	
+	private var prefetchedPages: Atomic<[Int : [Element]]> = Atomic(value: [:])
 
-extension Array {
-	
-	func appending(_ newElement: Element) -> [Element] {
-		var result = self
-		result.append(newElement)
-		return result
-	}
-	
-	func appending<S: Sequence>(contentsOf newElements: S) -> [Element]
-		where S.Iterator.Element == Element
-	{
-		var result = self
-		newElements.forEach { result.append($0) }
-		return result
-	}
-	
-	func appending<C: Collection>(contentsOf newElements: C) -> [Element]
-		where C.Iterator.Element == Element
-	{
-		var result = self
-		newElements.forEach { result.append($0) }
-		return result
-	}
-	
-}
-
-struct Atomic<Value> {
-	
-	private var semaphore = DispatchSemaphore(value: 1)
-	
-	private var _value: Value
-	var value: Value {
-		get {
-			semaphore.wait(); defer { semaphore.signal() }
-			let value = _value
-			return value
-		}
-		set {
-			semaphore.wait(); defer { semaphore.signal() }
-			_value = newValue
-		}
-	}
-	
-	init(value: Value) {
-		self._value = value
-	}
-	
-}
-
-class PaginatedListSource<Item: Any, Filter: Any> {
-	
-	private(set) var pageSize: Int = 20
-	private(set) var fetchNextPageItemIndex: Int = 10
-	
-	typealias Tuple = (URLSessionDataTask, FetchCompletionBlock)
-	
-	private var prefetchingPages: Atomic<[Int : URLSessionDataTask]> = Atomic(value: [:])
-	
 	private var waitingForPrefetchingCompletionPages: Atomic<[Int : FetchCompletionBlock]> = Atomic(value: [:])
 	
 	private var fetchingPages: Atomic<[Int : Tuple]> = Atomic(value: [:])
-	
-	private var prefetchedPages: Atomic<[Int : [Item]]> = Atomic(value: [:])
 	
 	private var fetchedPages: Atomic<Set<Int>> = Atomic(value: Set())
 	
@@ -91,8 +48,8 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 	
 	private(set) var totalPageNumber: Int = 0
 	
-	private var _items: Atomic<[Item]> = Atomic(value: [])
-	var items: [Item] {
+	private var _items: Atomic<[Element]> = Atomic(value: [])
+	var items: [Element] {
 		return _items.value
 	}
 	private(set) var lastFetchedPage: Atomic<Int> = Atomic(value: 0)
@@ -103,21 +60,16 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 		}
 	}
 	
-	typealias FetchCompletionBlock =
-		(_ result: Result<[Item]>,
-		_ totalElementsCount: Int?)
-		-> Void
-	
-	typealias PageFetchBlock = (
-		_ pageNumber: Int,
-		_ filter: Filter?,
-		_ completionHandler: @escaping FetchCompletionBlock)
-		-> URLSessionDataTask
-	
 	var fetchPage: PageFetchBlock
 	
-	init(pageFetchBlock: @escaping PageFetchBlock, completionHandler: @escaping FetchCompletionBlock) {
+	init(
+		pageSize: Int = 20,
+		pageFetchBlock: @escaping PageFetchBlock,
+		completionHandler: @escaping FetchCompletionBlock)
+	{
 		self.fetchPage = pageFetchBlock
+		self.pageSize = pageSize
+		super.init()
 		reloadData(completionHandler: completionHandler)
 	}
 	
@@ -137,10 +89,99 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 		fetch(pageNumber: lastFetchedPage.value + 1, completionHandler: completionHandler)
 	}
 	
+	func fetchNextPage(collectionView: UICollectionView, completionHandler: FetchCompletionBlock?) {
+		fetchNextPage { [weak self] result, totalElementsCount in
+			
+			self?.addRowsTo(view: collectionView,
+			                result: result,
+			                totalElementsCount: totalElementsCount,
+			                completionHandler: completionHandler)
+			
+		}
+	}
+	
+	func fetchNextPage(tableView: UITableView, completionHandler: FetchCompletionBlock?) {
+		fetchNextPage { [weak self] result, totalElementsCount in
+			
+			self?.addRowsTo(view: tableView,
+			                result: result,
+			                totalElementsCount: totalElementsCount,
+			                completionHandler: completionHandler)
+			
+		}
+	}
+	
+	private func addRowsTo(
+		view: UIScrollView,
+		result: Result<[Element]>,
+		totalElementsCount: Int?,
+		completionHandler: FetchCompletionBlock?)
+	{
+		
+		let handler: FetchCompletionBlock = {
+			if view.contentSize.height > view.frame.height {
+				view.flashScrollIndicators()
+			}
+			completionHandler?($0, $1)
+		}
+		
+		let startingIndex = (lastFetchedPage.value - 1) * pageSize
+		let lastIndex = startingIndex + (result.value?.count ?? 0)
+		var indexPaths: [IndexPath] = []
+		for index in startingIndex..<lastIndex {
+			indexPaths.append(IndexPath(row: index, section: 0))
+		}
+		guard !indexPaths.isEmpty
+			else {
+				return
+		}
+		let lastIndexPath: IndexPath?
+		if items.count == totalElementsCount {
+			lastIndexPath = IndexPath(row: (totalPageNumber - 1) * pageSize,
+			                          section: 0)
+		} else {
+			lastIndexPath = .none
+		}
+		
+		if let tableView = view as? UITableView {
+			tableView.beginUpdates()
+			
+			if let lastIndexPath = lastIndexPath {
+				tableView.deleteRows(at: [lastIndexPath], with: .automatic)
+			}
+			if !indexPaths.isEmpty {
+				tableView.insertRows(at: indexPaths, with: .automatic)
+			}
+			
+			tableView.endUpdates()
+			
+			handler(result, totalElementsCount)
+		} else if let collectionView = view as? UICollectionView {
+			collectionView.performBatchUpdates({
+				
+				if let lastIndexPath = lastIndexPath {
+					collectionView.deleteItems(at: [lastIndexPath])
+				}
+				if !indexPaths.isEmpty {
+					collectionView.insertItems(at: indexPaths)
+				}
+				
+			}) { _ in
+				handler(result, self.totalElementsCount)
+			}
+		}
+		
+	}
+	
 	private func fetch(
 		pageNumber: Int,
 		completionHandler: @escaping FetchCompletionBlock)
 	{
+		
+		guard items.count != totalElementsCount || totalElementsCount == 0
+			else {
+				return
+		}
 		
 		guard
 			!fetchedPages.value.contains(pageNumber)
@@ -163,7 +204,7 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 			return
 		}
 		
-		let task = fetchPage(pageNumber, filter) { [weak self] (result: Result<[Item]>, totalElementsCount) in
+		let task = fetchPage(pageNumber, filter) { [weak self] (result: Result<[Element]>, totalElementsCount) in
 			
 			self?.fetchResult(pageNumber: pageNumber,
 			                  result: result,
@@ -179,7 +220,7 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 	private var queue: DispatchQueue = {
 		
 		let queue: DispatchQueue
-		let label = "itemsFetching queue\(Item.self)"
+		let label = "itemsFetching queue\(Element.self)"
 		if #available(iOS 10.0, *) {
 			queue = DispatchQueue(label: label,
 			                      qos: .utility,
@@ -199,7 +240,7 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 	
 	private func fetchResult(
 		pageNumber: Int,
-		result: Result<[Item]>,
+		result: Result<[Element]>,
 		totalElementsCount: Int?,
 		prefetching: Bool = false,
 		completionHandler: FetchCompletionBlock? = .none)
@@ -246,7 +287,7 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 	}
 	
 	private func prefetchedItems(
-		pageNumber: Int, items: [Item],
+		pageNumber: Int, items: [Element],
 		totalElementsCount: Int)
 	{
 		
@@ -267,7 +308,7 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 	
 	private func fetchedItems(
 		pageNumber: Int,
-		items: [Item],
+		items: [Element],
 		totalElementsCount: Int,
 		completionHandler: FetchCompletionBlock? = .none)
 	{
@@ -301,12 +342,12 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 	
 	private func prefetch(pageNumber: Int) {
 		
-		guard prefetchingPages.value[pageNumber] == .none
+		guard prefetchingPages.value[pageNumber] == nil
 			else {
 				return
 		}
 		
-		let task = fetchPage(pageNumber, filter) { [weak self] (result: Result<[Item]>, totalElementsCount) in
+		let task = fetchPage(pageNumber, filter) { [weak self] result, totalElementsCount in
 			
 			self?.fetchResult(pageNumber: pageNumber,
 			                  result: result,
@@ -317,6 +358,40 @@ class PaginatedListSource<Item: Any, Filter: Any> {
 		
 		prefetchingPages.value[pageNumber] = task
 		
+	}
+	
+	func shouldFetchNextPage(afterPrefetchItemsAt indexPaths: [IndexPath]) -> Bool {
+		
+		var shouldFetchNextPage: Bool = false
+		indexPaths.forEach {
+			guard $0.row < items.count
+				else {
+					shouldFetchNextPage = true
+					return
+			}
+			guard let prefetchingBlock = prefetchingBlock
+				else {
+					return
+			}
+			prefetchingBlock(items[$0.row], .prefetch)
+		}
+		
+		return shouldFetchNextPage
+		
+	}
+	
+	func cancelPrefetchingForItemsAt(indexPaths: [IndexPath]) {
+		
+		indexPaths.forEach {
+			guard
+				$0.row < items.count,
+				let prefetchingBlock = prefetchingBlock
+				else {
+					return
+			}
+			prefetchingBlock(items[$0.row], .cancel)
+		}
+	
 	}
 	
 }
