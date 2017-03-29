@@ -18,10 +18,12 @@ class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
 	UITableViewDataSourcePrefetching
 {
 	
-	weak var delegate: PaginatedDataSourceDelegate?
-	private(set) var dataSource: DataSourceType!
-	
 	typealias DataSourceType = PaginatedListSource<Element, FetchTask, Filter>
+	
+	weak var delegate: PaginatedDataSourceDelegate?
+	
+	private(set) var dataSource: DataSourceType!
+	// swiftlint:disable:previous implicitly_unwrapped_optional
 	
 	var elements: [Element] {
 		return dataSource.elements

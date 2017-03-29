@@ -10,7 +10,7 @@ import Foundation
 
 struct Atomic<Value> {
 	
-	private var semaphore = DispatchSemaphore(value: 1)
+	private var semaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
 	
 	private var _value: Value
 	var value: Value {

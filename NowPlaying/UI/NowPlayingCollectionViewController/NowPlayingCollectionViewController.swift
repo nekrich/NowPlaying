@@ -31,8 +31,10 @@ class NowPlayingCollectionViewController: UIViewController,
 	fileprivate private(set) var movies: [Movie?] = []
 	
 	private var dataSource: MovieCollectionViewDataSource!
+	// swiftlint:disable:previous implicitly_unwrapped_optional
 	
 	private(set) weak var refreshControl: UIRefreshControl!
+	// swiftlint:disable:previous implicitly_unwrapped_optional
 	
 	override func viewDidLoad() {
 		
