@@ -130,6 +130,13 @@ class NowPlayingCollectionViewController: UIViewController,
 		collectionView.reloadData()
 	}
 	
+	func paginatedDataSource<Element, FetchTask, Filter>(
+		_ source: PaginatedDataSource<Element, FetchTask, Filter>,
+		didFetchElements elements: [Element]) where FetchTask : Cancelable
+	{
+		
+	}
+	
 }
 
 // MARK: - MovieCollectionViewDataSource

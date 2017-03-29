@@ -9,21 +9,29 @@
 import UIKit
 
 protocol PaginatedDataSourceDelegate: class {
-	func paginatedDataSource<Element, FetchTask, Filter>(_ source: PaginatedDataSource<Element, FetchTask, Filter>,
-	                         didFinshInitializationWith: Result<Void>)
+	
+	func paginatedDataSource<Element, FetchTask, Filter>(
+		_ source: PaginatedDataSource<Element, FetchTask, Filter>,
+		didFinshInitializationWith result: Result<Void>)
+	
+	func paginatedDataSource<Element, FetchTask, Filter>(
+		_ source: PaginatedDataSource<Element, FetchTask, Filter>,
+		didFetchElements elements: [Element])
+	
 }
 
-class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
+class PaginatedDataSource<Element, FetchTask: Cancelable, Filter>: NSObject,
 	UICollectionViewDataSourcePrefetching,
-	UITableViewDataSourcePrefetching
+	UITableViewDataSourcePrefetching,
+	PaginatedListSourceDelegate
 {
-	
-	typealias DataSourceType = PaginatedListSource<Element, FetchTask, Filter>
 	
 	weak var delegate: PaginatedDataSourceDelegate?
 	
 	private(set) var dataSource: DataSourceType!
 	// swiftlint:disable:previous implicitly_unwrapped_optional
+	
+	typealias DataSourceType = PaginatedListSource<Element, FetchTask, Filter>
 	
 	var elements: [Element] {
 		return dataSource.elements
@@ -57,9 +65,9 @@ class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
 		super.init()
 		
 		dataSource = PaginatedListSource(pageSize: pageSize,
+		                                 delegate: self,
 		                                 pageFetchBlock: pageFetchBlock)
-		{ [weak self] result, totalElementsCount in
-			self?.delegateDidFinshInitialization(result: result)
+		{ result, totalElementsCount in
 			completionHandler?(result, totalElementsCount)
 		}
 		
@@ -156,6 +164,28 @@ class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
 	var numberOfRows: Int {
 		let itemsCount = elements.count
 		return itemsCount + (itemsCount == dataSource.totalElementsCount ? 0 : 1)
+	}
+	
+	func paginatedListSource<Element, FetchTask, Filter>(
+		_ source: PaginatedListSource<Element, FetchTask, Filter>, didFinshInitializationWith result: Result<Void>)
+	{
+		delegate?.paginatedDataSource(self, didFinshInitializationWith: result)
+	}
+	
+	private typealias ElementsList = [Element]
+	
+	func paginatedListSource<PElement, FetchTask, Filter>(
+		_ source: PaginatedListSource<PElement, FetchTask, Filter>,
+		didFetchElements elements: [PElement])
+	{
+		guard source === self.dataSource
+			else {
+				return
+		}
+		
+		delegate?.paginatedDataSource(self, didFetchElements: (elements as NSArray) as! [Element])
+		// swiftlint:disable:previous force_cast
+		
 	}
 	
 }

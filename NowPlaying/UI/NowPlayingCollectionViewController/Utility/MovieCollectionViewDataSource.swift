@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import SDWebImage
 
+extension URLSessionDataTask: Cancelable {
+	
+}
+
 class MovieCollectionViewDataSource: PaginatedCollectionViewDataSource<Movie, URLSessionDataTask, Void> {
 	
 	weak var collectionViewFlowLayout: UICollectionViewFlowLayout?

@@ -9,7 +9,23 @@
 import Foundation
 import UIKit
 
-class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:disable:this type_body_length
+protocol PaginatedListSourceDelegate: class {
+	
+	func paginatedListSource<Element, FetchTask, Filter>(
+		_ source: PaginatedListSource<Element, FetchTask, Filter>,
+		didFinshInitializationWith result: Result<Void>)
+	
+	func paginatedListSource<Element, FetchTask, Filter>(
+		_ source: PaginatedListSource<Element, FetchTask, Filter>,
+		didFetchElements elements: [Element])
+	
+}
+
+protocol Cancelable {
+	func cancel()
+}
+
+class PaginatedListSource<Element, FetchTask: Cancelable, Filter>: NSObject { // swiftlint:disable:this type_body_length
 	
 	let pageSize: Int
 	
@@ -33,7 +49,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 	private var prefetchingPages: Atomic<[Int : FetchTask]> = Atomic(value: [:])
 	
 	private var prefetchedPages: Atomic<[Int : [Element]]> = Atomic(value: [:])
-
+	
 	private var waitingForPrefetchingCompletionPages: Atomic<[Int : FetchCompletionBlock]> = Atomic(value: [:])
 	
 	private var fetchingPages: Atomic<[Int : Tuple]> = Atomic(value: [:])
@@ -62,13 +78,17 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 	
 	var fetchPage: PageFetchBlock
 	
+	weak var delegate: PaginatedListSourceDelegate?
+	
 	init(
 		pageSize: Int,
+		delegate: PaginatedListSourceDelegate?,
 		pageFetchBlock: @escaping PageFetchBlock,
 		completionHandler: @escaping FetchCompletionBlock)
 	{
 		self.fetchPage = pageFetchBlock
 		self.pageSize = pageSize
+		self.delegate = delegate
 		super.init()
 		DispatchQueue.main.async {
 			self.reloadData(completionHandler: completionHandler)
@@ -80,11 +100,35 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 	}
 	
 	func reloadData(completionHandler: @escaping FetchCompletionBlock) {
-		
+		prefetchingPages.value.forEach {
+			$0.1.cancel()
+		}
+		fetchingPages.value.forEach {
+			$0.1.0?.cancel()
+		}
+		operationQueue.cancelAllOperations()
+		operationQueue.waitUntilAllOperationsAreFinished()
 		fetchedPages = Atomic(value: Set())
 		lastFetchedPage.value = 0
-		fetch(pageNumber: 1, completionHandler: completionHandler)
+		totalElementsCount = 0
+		prefetchingPages.value = [:]
+		prefetchedPages.value = [:]
+		fetchingPages.value = [:]
+		fetch(pageNumber: 1) { [weak self] (result, totalElementsCount) in
+			self?.delegateDidFinshInitialization(result: result)
+			completionHandler(result, totalElementsCount)
+		}
 		
+	}
+	
+	private func delegateDidFinshInitialization(result: Result<[Element]>) {
+		let delegateResult: Result<Void>
+		if let error = result.error {
+			delegateResult = .failure(error)
+		} else {
+			delegateResult = .success()
+		}
+		delegate?.paginatedListSource(self, didFinshInitializationWith: delegateResult)
 	}
 	
 	func fetchNextPage(completionHandler: @escaping FetchCompletionBlock) {
@@ -240,6 +284,14 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		
 	}()
 	
+	private lazy var operationQueue: OperationQueue = {
+		let operationQueue = OperationQueue()
+		operationQueue.maxConcurrentOperationCount = 1
+		operationQueue.qualityOfService = .utility
+		operationQueue.underlyingQueue = self.queue
+		return operationQueue
+	}()
+	
 	private func fetchResult(
 		pageNumber: Int,
 		result: Result<[Element]>,
@@ -261,7 +313,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		}
 		
 		if DispatchQueue.currentLabel != queue.label {
-			queue.async {
+			operationQueue.addOperation {
 				self.fetchResult(pageNumber: pageNumber,
 				                 result: result,
 				                 totalElementsCount: totalElementsCount,
@@ -273,6 +325,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		
 		if pageNumber == 1 && self.totalElementsCount == 0 {
 			self.totalElementsCount = _totalElementsCount
+			self._elements.value = []
 		}
 		
 		if !prefetching {
@@ -341,6 +394,8 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 			prefetch(pageNumber: pageNumber + 1)
 		}
 		
+		delegate?.paginatedListSource(self, didFetchElements: elements)
+		
 	}
 	
 	private func prefetch(pageNumber: Int) {
@@ -352,11 +407,13 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		
 		let task = fetchPage(pageNumber, filter) { [weak self] result, totalElementsCount in
 			
-			self?.fetchResult(pageNumber: pageNumber,
-			                  result: result,
-			                  totalElementsCount: totalElementsCount,
-			                  prefetching: true)
-			
+			if self?.prefetchingPages.value.keys.contains(pageNumber) ?? false {
+				
+				self?.fetchResult(pageNumber: pageNumber,
+				                  result: result,
+				                  totalElementsCount: totalElementsCount,
+				                  prefetching: true)
+			}
 		}
 		
 		prefetchingPages.value[pageNumber] = task
@@ -394,7 +451,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 			}
 			prefetchingBlock(elements[$0.row], .cancel)
 		}
-	
+		
 	}
 	
-}
+} // swiftlint:disable:this file_length

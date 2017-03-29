@@ -8,7 +8,9 @@
 
 import UIKit
 
-class PaginatedTableViewDataSource<Element, FetchTask, Filter>: PaginatedDataSource<Element, FetchTask, Filter>,
+class PaginatedTableViewDataSource<Element, FetchTask: Cancelable, Filter>:
+	PaginatedDataSource<Element, FetchTask, Filter>,
+	
 	UITableViewDataSource
 {
 	

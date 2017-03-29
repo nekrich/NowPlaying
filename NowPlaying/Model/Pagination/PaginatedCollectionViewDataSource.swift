@@ -8,7 +8,9 @@
 
 import UIKit
 
-class PaginatedCollectionViewDataSource<Element, FetchTask, Filter>: PaginatedDataSource<Element, FetchTask, Filter>,
+class PaginatedCollectionViewDataSource<Element, FetchTask: Cancelable, Filter>:
+	PaginatedDataSource<Element, FetchTask, Filter>,
+	
 	UICollectionViewDataSource
 {
 	
