@@ -9,7 +9,7 @@
 import UIKit
 
 class NowPlayingCollectionViewController: UIViewController,
-	MovieCollectionViewDataSourceDelegate,
+	PaginatedDataSourceDelegate,
 	UICollectionViewDelegateFlowLayout
 {
 	
@@ -30,13 +30,17 @@ class NowPlayingCollectionViewController: UIViewController,
 	
 	fileprivate private(set) var movies: [Movie?] = []
 	
-	let dataSource = MovieCollectionViewDataSource()
+	private var dataSource: MovieCollectionViewDataSource!
+	// swiftlint:disable:previous implicitly_unwrapped_optional
 	
 	private(set) weak var refreshControl: UIRefreshControl!
+	// swiftlint:disable:previous implicitly_unwrapped_optional
 	
 	override func viewDidLoad() {
 		
 		super.viewDidLoad()
+		
+		dataSource = MovieCollectionViewDataSource(collectionViewFlowLayout: collectionViewFlowLayout)
 		
 		collectionView.register(cellType: MovieCollectionViewCell.self)
 		collectionView.register(cellType: SpinnerCollectionViewCell.self)
@@ -87,7 +91,7 @@ class NowPlayingCollectionViewController: UIViewController,
 		didSelectItemAt indexPath: IndexPath)
 	{
 		
-		guard indexPath.row < dataSource.movies.count
+		guard indexPath.row < dataSource.elements.count
 			else {
 				return
 		}
@@ -95,7 +99,7 @@ class NowPlayingCollectionViewController: UIViewController,
 		let itemIndex = indexPath.row
 		let movieDetailsController = MovieDetailsViewController()
 		movieDetailsController.indexPath = indexPath
-		movieDetailsController.movie = dataSource.movies[itemIndex]
+		movieDetailsController.movie = dataSource.elements[itemIndex]
 		movieDetailsController.moviePosterWidth = collectionViewFlowLayout.itemSize.width
 		navigationController?.pushViewController(movieDetailsController, animated: true)
 		
@@ -108,13 +112,28 @@ class NowPlayingCollectionViewController: UIViewController,
 		-> CGSize
 	{
 		let layout = self.collectionViewFlowLayout! // swiftlint:disable:this force_unwrapping
-		guard indexPath.row >= dataSource.movies.count  else {
+		guard indexPath.row >= dataSource.elements.count  else {
 			return layout.itemSize
 		}
 		
 		let width = collectionView.bounds.width - (layout.sectionInset.left + layout.sectionInset.right)
 		
 		return CGSize(width: width, height: 45)
+		
+	}
+	
+	func paginatedDataSource<Element, FetchTask, Filter>(
+		_ source: PaginatedDataSource<Element, FetchTask, Filter>,
+		didFinshInitializationWith: Result<Void>)
+	{
+		refreshControl.endRefreshing()
+		collectionView.reloadData()
+	}
+	
+	func paginatedDataSource<Element, FetchTask, Filter>(
+		_ source: PaginatedDataSource<Element, FetchTask, Filter>,
+		didFetchElements elements: [Element]) where FetchTask : Cancelable
+	{
 		
 	}
 	

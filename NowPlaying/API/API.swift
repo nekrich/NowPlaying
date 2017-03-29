@@ -22,7 +22,7 @@ struct API {
 	static fileprivate let apiKey: String = "ebea8cfca72fdff8d2624ad7bbf78e4c"
 	
 	// Activity Indicator
-	static private var lock = DispatchSemaphore(value: 1)
+	static private var lock: DispatchSemaphore = DispatchSemaphore(value: 1)
 	static private var _activeRequestsCount: UInt = 0
 	fileprivate static var activeRequestsCount: UInt {
 		get {

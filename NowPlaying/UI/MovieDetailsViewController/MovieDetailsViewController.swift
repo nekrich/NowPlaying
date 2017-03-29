@@ -36,7 +36,7 @@ class MovieDetailsViewController: UIViewController {
 		}
 	}
 	
-	private let dataSource = MovieDetailsTableViewDataSource()
+	private let dataSource: MovieDetailsTableViewDataSource = MovieDetailsTableViewDataSource()
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
