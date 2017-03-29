@@ -15,14 +15,17 @@ class PaginatedCollectionViewDataSource<Element, FetchTask, Filter>: PaginatedDa
 	let cellDescriptor: (Element?) -> CollectionViewCellDescriptor
 	
 	init(
+		pageSize: Int,
 		pageFetchBlock: @escaping DataSourceType.PageFetchBlock,
 		prefetchingBlock: DataSourceType.PrefetchingBlock? = .none,
 		completionHandler: DataSourceType.FetchCompletionBlock? = .none,
-		cellDescriptor: @escaping (Element?) -> CollectionViewCellDescriptor
-		)
+		cellDescriptor: @escaping (Element?) -> CollectionViewCellDescriptor)
 	{
 		self.cellDescriptor = cellDescriptor
-		super.init(pageFetchBlock: pageFetchBlock, prefetchingBlock: prefetchingBlock, completionHandler: completionHandler)
+		super.init(pageSize: pageSize,
+		           pageFetchBlock: pageFetchBlock,
+		           prefetchingBlock: prefetchingBlock,
+		           completionHandler: completionHandler)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

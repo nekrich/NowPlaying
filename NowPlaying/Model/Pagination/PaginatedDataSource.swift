@@ -24,7 +24,7 @@ class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
 	typealias DataSourceType = PaginatedListSource<Element, FetchTask, Filter>
 	
 	var elements: [Element] {
-		return dataSource.items
+		return dataSource.elements
 	}
 	
 	var prefetchingBlock: DataSourceType.PrefetchingBlock? {
@@ -46,6 +46,7 @@ class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
 	}
 	
 	init(
+		pageSize: Int,
 		pageFetchBlock: @escaping DataSourceType.PageFetchBlock,
 		prefetchingBlock: DataSourceType.PrefetchingBlock?,
 		completionHandler: DataSourceType.FetchCompletionBlock? = .none)
@@ -53,7 +54,9 @@ class PaginatedDataSource<Element, FetchTask, Filter>: NSObject,
 		
 		super.init()
 		
-		dataSource = PaginatedListSource(pageFetchBlock: pageFetchBlock) { [weak self] result, totalElementsCount in
+		dataSource = PaginatedListSource(pageSize: pageSize,
+		                                 pageFetchBlock: pageFetchBlock)
+		{ [weak self] result, totalElementsCount in
 			self?.delegateDidFinshInitialization(result: result)
 			completionHandler?(result, totalElementsCount)
 		}

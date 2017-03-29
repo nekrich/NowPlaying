@@ -48,9 +48,9 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 	
 	private(set) var totalPageNumber: Int = 0
 	
-	private var _items: Atomic<[Element]> = Atomic(value: [])
-	var items: [Element] {
-		return _items.value
+	private var _elements: Atomic<[Element]> = Atomic(value: [])
+	var elements: [Element] {
+		return _elements.value
 	}
 	private(set) var lastFetchedPage: Atomic<Int> = Atomic(value: 0)
 	
@@ -63,14 +63,16 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 	var fetchPage: PageFetchBlock
 	
 	init(
-		pageSize: Int = 20,
+		pageSize: Int,
 		pageFetchBlock: @escaping PageFetchBlock,
 		completionHandler: @escaping FetchCompletionBlock)
 	{
 		self.fetchPage = pageFetchBlock
 		self.pageSize = pageSize
 		super.init()
-		reloadData(completionHandler: completionHandler)
+		DispatchQueue.main.async {
+			self.reloadData(completionHandler: completionHandler)
+		}
 	}
 	
 	deinit {
@@ -136,7 +138,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 				return
 		}
 		let lastIndexPath: IndexPath?
-		if items.count == totalElementsCount {
+		if elements.count == totalElementsCount {
 			lastIndexPath = IndexPath(row: (totalPageNumber - 1) * pageSize,
 			                          section: 0)
 		} else {
@@ -178,7 +180,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		completionHandler: @escaping FetchCompletionBlock)
 	{
 		
-		guard items.count != totalElementsCount || totalElementsCount == 0
+		guard elements.count != totalElementsCount || totalElementsCount == 0
 			else {
 				return
 		}
@@ -196,9 +198,9 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 				return
 		}
 		
-		if let items = prefetchedPages.value[pageNumber] {
+		if let elements = prefetchedPages.value[pageNumber] {
 			fetchResult(pageNumber: pageNumber,
-			            result: .success(items),
+			            result: .success(elements),
 			            totalElementsCount: totalElementsCount,
 			            completionHandler: completionHandler)
 			return
@@ -275,19 +277,20 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		
 		if !prefetching {
 			fetchedItems(pageNumber: pageNumber,
-			             items: itemsResult,
+			             elements: itemsResult,
 			             totalElementsCount: _totalElementsCount,
 			             completionHandler: completionHandler)
 		} else {
 			prefetchedItems(pageNumber: pageNumber,
-			                items: itemsResult,
+			                elements: itemsResult,
 			                totalElementsCount: _totalElementsCount)
 		}
 		
 	}
 	
 	private func prefetchedItems(
-		pageNumber: Int, items: [Element],
+		pageNumber: Int,
+		elements: [Element],
 		totalElementsCount: Int)
 	{
 		
@@ -295,11 +298,11 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 			prefetchingPages.value[pageNumber] = .none
 		}
 		
-		prefetchedPages.value[pageNumber] = items
+		prefetchedPages.value[pageNumber] = elements
 		
 		if let waitingForPrefetchingBlock = waitingForPrefetchingCompletionPages.value[pageNumber] {
 			fetchResult(pageNumber: pageNumber,
-			            result: .success(items),
+			            result: .success(elements),
 			            totalElementsCount: totalElementsCount,
 			            completionHandler: waitingForPrefetchingBlock)
 		}
@@ -308,7 +311,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 	
 	private func fetchedItems(
 		pageNumber: Int,
-		items: [Element],
+		elements: [Element],
 		totalElementsCount: Int,
 		completionHandler: FetchCompletionBlock? = .none)
 	{
@@ -318,7 +321,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 			fetchingPages.value[pageNumber] = .none
 			lastFetchedPage.value += 1
 			DispatchQueue.main.async {
-				completionHandler?(.success(items), totalElementsCount)
+				completionHandler?(.success(elements), totalElementsCount)
 			}
 		}
 		
@@ -332,7 +335,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 			       "Wrong fetched page number: \(pageNumber) instead of \(totalPageNumber)")
 		}
 		
-		self._items.value = self._items.value.appending(contentsOf: items)
+		self._elements.value = self._elements.value.appending(contentsOf: elements)
 		
 		if (pageNumber + 1) < totalPageNumber {
 			prefetch(pageNumber: pageNumber + 1)
@@ -364,7 +367,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		
 		var shouldFetchNextPage: Bool = false
 		indexPaths.forEach {
-			guard $0.row < items.count
+			guard $0.row < elements.count
 				else {
 					shouldFetchNextPage = true
 					return
@@ -373,7 +376,7 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 				else {
 					return
 			}
-			prefetchingBlock(items[$0.row], .prefetch)
+			prefetchingBlock(elements[$0.row], .prefetch)
 		}
 		
 		return shouldFetchNextPage
@@ -384,12 +387,12 @@ class PaginatedListSource<Element, FetchTask, Filter>: NSObject { // swiftlint:d
 		
 		indexPaths.forEach {
 			guard
-				$0.row < items.count,
+				$0.row < elements.count,
 				let prefetchingBlock = prefetchingBlock
 				else {
 					return
 			}
-			prefetchingBlock(items[$0.row], .cancel)
+			prefetchingBlock(elements[$0.row], .cancel)
 		}
 	
 	}

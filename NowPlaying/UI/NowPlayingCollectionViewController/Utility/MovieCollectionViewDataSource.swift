@@ -25,7 +25,7 @@ class MovieCollectionViewDataSource: PaginatedCollectionViewDataSource<Movie, UR
 		self.collectionViewFlowLayout = collectionViewFlowLayout
 		self.defaultItemWidth = collectionViewFlowLayout.itemSize.width
 		
-		super.init(pageFetchBlock: API.getItems) { (movie) -> CollectionViewCellDescriptor in
+		super.init(pageSize: 20, pageFetchBlock: API.getItems) { (movie) -> CollectionViewCellDescriptor in
 			switch movie {
 			case .some(let element):
 				return CollectionViewCellDescriptor { (cell: MovieCollectionViewCell, indexPath) in

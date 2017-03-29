@@ -15,13 +15,17 @@ class PaginatedTableViewDataSource<Element, FetchTask, Filter>: PaginatedDataSou
 	let cellDescriptor: (Element?) -> TableViewCellDescriptor
 	
 	init(
+		pageSize: Int,
 		pageFetchBlock: @escaping DataSourceType.PageFetchBlock,
 		prefetchingBlock: DataSourceType.PrefetchingBlock? = .none,
 		completionHandler: DataSourceType.FetchCompletionBlock? = .none,
 		cellDescriptor: @escaping (Element?) -> TableViewCellDescriptor)
 	{
 		self.cellDescriptor = cellDescriptor
-		super.init(pageFetchBlock: pageFetchBlock, prefetchingBlock: prefetchingBlock, completionHandler: completionHandler)
+		super.init(pageSize: pageSize,
+		           pageFetchBlock: pageFetchBlock,
+		           prefetchingBlock: prefetchingBlock,
+		           completionHandler: completionHandler)
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
