@@ -96,13 +96,13 @@
 		68BA868F1E814DE400FE7648 /* DispatchQueue+currentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+currentLabel.swift"; sourceTree = "<group>"; };
 		68BA86911E814E0800FE7648 /* Array+appending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+appending.swift"; sourceTree = "<group>"; };
 		68BA86931E814E2700FE7648 /* Atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		68BA86951E81540500FE7648 /* PaginatedCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedCollectionViewDataSource.swift; path = PaginatedCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		68BA86951E81540500FE7648 /* PaginatedCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		68BA86971E817F0600FE7648 /* PaginatedListSourcePrefetchingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedListSourcePrefetchingState.swift; sourceTree = "<group>"; };
 		68BA86991E817F2A00FE7648 /* TableViewCellDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCellDescriptor.swift; sourceTree = "<group>"; };
 		68BA869B1E817F3D00FE7648 /* CollectionViewCellDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellDescriptor.swift; sourceTree = "<group>"; };
-		68BA869D1E817F5700FE7648 /* PaginatedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedDataSource.swift; path = PaginatedDataSource.swift; sourceTree = "<group>"; };
-		68BA869F1E8180F000FE7648 /* PaginatedTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedTableViewDataSource.swift; path = PaginatedTableViewDataSource.swift; sourceTree = "<group>"; };
-		68BC7BFD1E7AFCFD00BC77BC /* PaginatedListSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedListSource.swift; path = PaginatedListSource.swift; sourceTree = "<group>"; };
+		68BA869D1E817F5700FE7648 /* PaginatedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedDataSource.swift; sourceTree = "<group>"; };
+		68BA869F1E8180F000FE7648 /* PaginatedTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedTableViewDataSource.swift; sourceTree = "<group>"; };
+		68BC7BFD1E7AFCFD00BC77BC /* PaginatedListSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedListSource.swift; sourceTree = "<group>"; };
 		68E153651E783F4D00C93EB5 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E153681E783F4D00C93EB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68E1536A1E783F4D00C93EB5 /* NowPlayingCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingCollectionViewController.swift; sourceTree = "<group>"; };
@@ -245,7 +245,6 @@
 				68BA869F1E8180F000FE7648 /* PaginatedTableViewDataSource.swift */,
 				68BA86951E81540500FE7648 /* PaginatedCollectionViewDataSource.swift */,
 			);
-			name = Pagination;
 			path = Pagination;
 			sourceTree = "<group>";
 		};
@@ -255,7 +254,6 @@
 				68BA86991E817F2A00FE7648 /* TableViewCellDescriptor.swift */,
 				68BA869B1E817F3D00FE7648 /* CollectionViewCellDescriptor.swift */,
 			);
-			name = CellDescriptor;
 			path = CellDescriptor;
 			sourceTree = "<group>";
 		};
