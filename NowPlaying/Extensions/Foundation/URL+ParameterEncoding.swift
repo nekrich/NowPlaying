@@ -13,8 +13,8 @@ extension URL {
 	private static func query(_ parameters: [String: Any]) -> String {
 		
 		let components: [String: String] = parameters.reduce([String: String]()) {
-			var result = $0.0
-			result[$0.1.key] = String(describing: $0.1.value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+			var result = $0
+			result[$1.key] = String(describing: $1.value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 			return result
 		}
 		

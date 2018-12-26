@@ -191,7 +191,7 @@ extension API {
 					return
 			}
 			
-			let movies: [Movie] = results.flatMap { Movie(jsonDictionary: $0) }
+			let movies: [Movie] = results.compactMap(Movie.init)
 			
 			let movieResult = MovieResult(totalCount: totalCount, movies: movies)
 			

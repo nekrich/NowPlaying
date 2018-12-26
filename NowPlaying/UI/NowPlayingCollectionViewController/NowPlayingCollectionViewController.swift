@@ -64,7 +64,7 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 		if #available(iOS 10.0, *) {
 			collectionView.refreshControl = refreshControl
-			collectionView.sendSubview(toBack: refreshControl)
+			collectionView.sendSubviewToBack(refreshControl)
 		} else {
 			collectionView.insertSubview(refreshControl, at: 0)
 		}

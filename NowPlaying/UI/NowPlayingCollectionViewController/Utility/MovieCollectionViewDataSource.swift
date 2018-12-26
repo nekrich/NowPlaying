@@ -54,7 +54,8 @@ class MovieCollectionViewDataSource: PaginatedCollectionViewDataSource<Movie, UR
 		
 		if prefetch.prefetch {
 			
-			let task = SDWebImageManager.shared().loadImage(with: url, options: [], progress: .none) { [weak self] _ in
+			let task = SDWebImageManager.shared()
+        .loadImage(with: url, options: [], progress: .none) { [weak self] (_, _, _, _, _, _) in
 				self?.prefetchingImages[url] = .none
 			}
 			self.prefetchingImages[url] = task

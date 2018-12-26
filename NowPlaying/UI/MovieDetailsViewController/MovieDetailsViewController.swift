@@ -57,7 +57,7 @@ class MovieDetailsViewController: UIViewController {
 		
 		configure()
 		
-		tableView.rowHeight = UITableViewAutomaticDimension
+		tableView.rowHeight = UITableView.automaticDimension
 		tableView.estimatedRowHeight = 44.0
 		tableView.tableFooterView = UIView()
 		

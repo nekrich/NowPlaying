@@ -80,7 +80,7 @@ class PaginatedDataSource<Element, FetchTask: Cancelable, Filter>: NSObject,
 		if let error = result.error {
 			delegateResult = .failure(error)
 		} else {
-			delegateResult = .success()
+			delegateResult = .success(())
 		}
 		delegate?.paginatedDataSource(self, didFinshInitializationWith: delegateResult)
 	}
