@@ -80,9 +80,10 @@ class NowPlayingCollectionViewController: UIViewController,
 		
 	}
 	
-	func reloadData(_ sender: Any) {
+	@objc
+  func reloadData(_ sender: Any) {
 		
-		dataSource.reloadData { _ in }
+		dataSource.reloadData { _, _  in }
 		
 	}
 	
@@ -132,7 +133,7 @@ class NowPlayingCollectionViewController: UIViewController,
 	
 	func paginatedDataSource<Element, FetchTask, Filter>(
 		_ source: PaginatedDataSource<Element, FetchTask, Filter>,
-		didFetchElements elements: [Element]) where FetchTask : Cancelable
+		didFetchElements elements: [Element]) where FetchTask: Cancelable
 	{
 		
 	}

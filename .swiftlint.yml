@@ -74,7 +74,8 @@ file_header:
 
 colon:
   apply_to_dictionaries: false
-missing_docs:
-#  - private
-#  - internal
-  - public
+
+explicit_type_interface:
+  excluded: 
+    - local
+  severity: warning

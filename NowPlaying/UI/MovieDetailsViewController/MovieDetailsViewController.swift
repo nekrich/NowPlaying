@@ -75,7 +75,8 @@ class MovieDetailsViewController: UIViewController {
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	func newMovieDetails(_ notification: Notification) {
+	@objc
+  func newMovieDetails(_ notification: Notification) {
 		if notification.object as? IndexPath == indexPath {
 			self.movie = notification.userInfo?[Notification.Name.MovieUserInfoKeys.movie] as? Movie
 		}

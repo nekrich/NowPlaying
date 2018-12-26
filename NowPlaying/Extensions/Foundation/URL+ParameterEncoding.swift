@@ -10,9 +10,9 @@ import Foundation
 
 extension URL {
 	
-	private static func query(_ parameters: [String : Any]) -> String {
+	private static func query(_ parameters: [String: Any]) -> String {
 		
-		let components: [String : String] = parameters.reduce([String : String]()) {
+		let components: [String: String] = parameters.reduce([String: String]()) {
 			var result = $0.0
 			result[$0.1.key] = String(describing: $0.1.value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 			return result
@@ -22,7 +22,7 @@ extension URL {
 		
 	}
 	
-	func appendingPercentEncodedParameters(_ parameters: [String : Any]) -> URL {
+	func appendingPercentEncodedParameters(_ parameters: [String: Any]) -> URL {
 		
 		var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false)!
 		// swiftlint:disable:previous force_unwrapping

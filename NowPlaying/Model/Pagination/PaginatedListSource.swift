@@ -46,13 +46,13 @@ class PaginatedListSource<Element, FetchTask: Cancelable, Filter>: NSObject { //
 	
 	var prefetchingBlock: PrefetchingBlock?
 	
-	private var prefetchingPages: Atomic<[Int : FetchTask]> = Atomic(value: [:])
+	private var prefetchingPages: Atomic<[Int: FetchTask]> = Atomic(value: [:])
 	
-	private var prefetchedPages: Atomic<[Int : [Element]]> = Atomic(value: [:])
+	private var prefetchedPages: Atomic<[Int: [Element]]> = Atomic(value: [:])
 	
-	private var waitingForPrefetchingCompletionPages: Atomic<[Int : FetchCompletionBlock]> = Atomic(value: [:])
+	private var waitingForPrefetchingCompletionPages: Atomic<[Int: FetchCompletionBlock]> = Atomic(value: [:])
 	
-	private var fetchingPages: Atomic<[Int : Tuple]> = Atomic(value: [:])
+	private var fetchingPages: Atomic<[Int: Tuple]> = Atomic(value: [:])
 	
 	private var fetchedPages: Atomic<Set<Int>> = Atomic(value: Set())
 	
@@ -72,7 +72,7 @@ class PaginatedListSource<Element, FetchTask: Cancelable, Filter>: NSObject { //
 	
 	var filter: Filter? {
 		didSet {
-			reloadData(completionHandler: { _ in })
+			reloadData(completionHandler: { _, _  in })
 		}
 	}
 	
@@ -203,18 +203,21 @@ class PaginatedListSource<Element, FetchTask: Cancelable, Filter>: NSObject { //
 			
 			handler(result, totalElementsCount)
 		} else if let collectionView = view as? UICollectionView {
-			collectionView.performBatchUpdates({
-				
-				if let lastIndexPath = lastIndexPath {
-					collectionView.deleteItems(at: [lastIndexPath])
-				}
-				if !indexPaths.isEmpty {
-					collectionView.insertItems(at: indexPaths)
-				}
-				
-			}) { _ in
-				handler(result, self.totalElementsCount)
-			}
+      collectionView.performBatchUpdates(
+        {
+          
+          if let lastIndexPath = lastIndexPath {
+            collectionView.deleteItems(at: [lastIndexPath])
+          }
+          if !indexPaths.isEmpty {
+            collectionView.insertItems(at: indexPaths)
+          }
+          
+      },
+        completion: { _ in
+          handler(result, self.totalElementsCount)
+      }
+      )
 		}
 		
 	}
@@ -303,6 +306,7 @@ class PaginatedListSource<Element, FetchTask: Cancelable, Filter>: NSObject { //
 		guard
 			let itemsResult = result.value,
 			let _totalElementsCount = totalElementsCount
+      // swiftlint:disable:previous identifier_name
 			else {
 				if !prefetching {
 					DispatchQueue.main.async {

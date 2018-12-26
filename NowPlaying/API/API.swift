@@ -45,7 +45,7 @@ struct API {
 		let frameWidth = UInt(ceil(width))
 		
 		let posterPath = posterPath.hasPrefix("/")
-			? String(posterPath.characters.suffix(posterPath.characters.count - 1))
+			? String(posterPath[posterPath.index(after: posterPath.startIndex)])
 			: posterPath
 		
 		let posterWidthString: String
@@ -84,7 +84,7 @@ extension API {
 		
 	}
 	
-	private static func jsonResponse(handler: @escaping (Result<[String : Any]>) -> Void)
+	private static func jsonResponse(handler: @escaping (Result<[String: Any]>) -> Void)
 		-> ((Data?, URLResponse?, Swift.Error?) -> Void)
 	{
 		
@@ -108,7 +108,7 @@ extension API {
 				return
 			}
 			
-			guard let json = responseObject as? [String : Any]
+			guard let json = responseObject as? [String: Any]
 				else {
 					handler(.failure(API.Error.cantParseResponse))
 					return
@@ -122,7 +122,7 @@ extension API {
 	
 	private static func getRequest(
 		to apiPath: String,
-		with parameters: [String : Any]? = .none)
+		with parameters: [String: Any]? = .none)
 		-> URLRequest
 	{
 		var parameters = parameters ?? [:]
@@ -185,7 +185,7 @@ extension API {
 			
 			guard
 				let json = result.value,
-				let results = json["results"] as? [[String : Any]],
+				let results = json["results"] as? [[String: Any]],
 				let totalCount = json["total_results"] as? Int
 				else {
 					return

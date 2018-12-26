@@ -23,7 +23,7 @@ class MovieCollectionViewDataSource: PaginatedCollectionViewDataSource<Movie, UR
 		return collectionViewFlowLayout?.itemSize.width ?? defaultItemWidth
 	}
 	
-	private var prefetchingImages: [URL : SDWebImageOperation] = [:]
+	private var prefetchingImages: [URL: SDWebImageOperation] = [:]
 	
 	init(collectionViewFlowLayout: UICollectionViewFlowLayout) {
 		self.collectionViewFlowLayout = collectionViewFlowLayout
